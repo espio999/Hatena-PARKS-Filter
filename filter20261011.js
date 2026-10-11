@@ -87,10 +87,7 @@ javascript:(async function(){
     function checkMatch(targetText, keyword, mode) {
       if (mode === "off") return true;
 
-      // チェックボックスがtrueの時、参加抽出の値を付与する処理
-      const extractedValue = (extractCheckbox && extractCheckbox.checked) ? getExtractedParticipationText() : "";
-
-      const keywords = (extractedValue + keyword).split(/[,，]/).map(k => k.trim().toLowerCase()).filter(k => k.length > 0);
+      const keywords = (keyword).split(/[,，]/).map(k => k.trim().toLowerCase()).filter(k => k.length > 0);
       if (keywords.length === 0) return true;
       const matched = keywords.some(k => targetText.includes(k));
       return mode === "include" ? matched : !matched;
@@ -98,11 +95,15 @@ javascript:(async function(){
 
     // フィルタの適用
     function applyFilter() {
-      const parkKw = document.getElementById("pf-park-kw").value;
+      const parkKw = (
+        (extractCheckbox && extractCheckbox.checked) ? document.getElementById("pf-participation-kw").value : ""
+      ) + document.getElementById("pf-park-kw").value;
       const parkMode = document.querySelector('input[name="pf-park-mode"]:checked').value;
       const authorKw = document.getElementById("pf-author-kw").value;
       const authorMode = document.querySelector('input[name="pf-author-mode"]:checked').value;
-      const contextKw = document.getElementById("pf-context-kw").value;
+      const contextKw = (
+        (extractCheckbox && extractCheckbox.checked) ? document.getElementById("pf-participation-kw").value : ""
+      ) + document.getElementById("pf-context-kw").value;
       const contextMode = document.querySelector('input[name="pf-context-mode"]:checked').value;
 
       const items = new Set();
@@ -150,6 +151,7 @@ javascript:(async function(){
       if (!isUpdating) {
         isUpdating = true;
         requestAnimationFrame(() => {
+          document.getElementById("pf-participation-kw").value = getExtractedParticipationText();
           applyFilter();
           isUpdating = false;
         });
