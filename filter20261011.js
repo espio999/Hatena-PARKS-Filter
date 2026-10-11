@@ -25,21 +25,23 @@ javascript:(async function(){
   */
 
   const panel = document.getElementById("parks-filter-panel");
+
   if (panel) {
     panel.style.display = panel.style.display === "none" ? "block" : "none";
     return;
   }
 
-  // 1. 外部CSSの読み込み
+  // CSSの読み込み
   if (!document.querySelector(`link[href="${CSS_URL}"]`)) {
     const link = document.createElement("link");
+
     link.rel = "stylesheet";
     link.href = CSS_URL;
     document.head.appendChild(link);
   }
 
-  // 2. 外部HTMLの非同期取得
   try {
+    // HTMLの非同期取得
     const response = await fetch(HTML_URL);
     if (!response.ok) throw new Error('HTMLの取得に失敗しました');
     const htmlText = await response.text();
@@ -49,6 +51,8 @@ javascript:(async function(){
     container.innerHTML = htmlText;
     document.body.appendChild(container);
     document.head.appendChild(script);
+
+    const extractCheckbox = document.getElementById("pf-extract-participation");
 
     // イベントハンドラとロジックの定義
     function getParentItem(node) {
@@ -64,15 +68,7 @@ javascript:(async function(){
       return node.parentElement;
     }
 
-    function checkMatch(targetText, keyword, mode) {
-      if (mode === "off") return true;
-      const keywords = keyword.split(/[,，]/).map(k => k.trim().toLowerCase()).filter(k => k.length > 0);
-      if (keywords.length === 0) return true;
-      const matched = keywords.some(k => targetText.includes(k));
-      return mode === "include" ? matched : !matched;
-    }
-
-    // 「参加抽出.txt」のロジックを関数化
+    // 参加中のパークを抽出
     function getExtractedParticipationText() {
       const section = Array.from(document.querySelectorAll('div[class*="_section_"]')).find(el => {
         const title = el.querySelector('span[class*="_title_"]');
@@ -87,25 +83,21 @@ javascript:(async function(){
       return '';
     }
 
-    function applyFilter() {
-      // 2. チェックボックスがtrueの時、参加抽出の値を付与する処理
-      const extractCheckbox = document.getElementById("pf-extract-participation");
+    // フィルタの適用判定
+    function checkMatch(targetText, keyword, mode) {
+      if (mode === "off") return true;
 
+      // チェックボックスがtrueの時、参加抽出の値を付与する処理
       const extractedValue = (extractCheckbox && extractCheckbox.checked) ? getExtractedParticipationText() : "";
 
-      /*
-      if (extractCheckbox && extractCheckbox.checked) {
-        const extractedValue = getExtractedParticipationText();
-        if (extractedValue) {
-          document.getElementById("pf-park-kw").value = extractedValue;
-          document.getElementById("pf-context-kw").value = extractedValue;
-        }
-      }
-      else {
-        extractedValue = "";
-      }
-      */
+      const keywords = (extractedValue + keyword).split(/[,，]/).map(k => k.trim().toLowerCase()).filter(k => k.length > 0);
+      if (keywords.length === 0) return true;
+      const matched = keywords.some(k => targetText.includes(k));
+      return mode === "include" ? matched : !matched;
+    }
 
+    // フィルタの適用
+    function applyFilter() {
       const parkKw = document.getElementById("pf-park-kw").value;
       const parkMode = document.querySelector('input[name="pf-park-mode"]:checked').value;
       const authorKw = document.getElementById("pf-author-kw").value;
@@ -126,18 +118,16 @@ javascript:(async function(){
         const authorText = authorEl ? authorEl.textContent.trim().toLowerCase() : "";
         const contextText = contextEl ? contextEl.textContent.trim().toLowerCase() : "";
 
-        const isVisible = checkMatch(parkText, extractedValue + parkKw, parkMode) && 
+        const isVisible = checkMatch(parkText, parkKw, parkMode) && 
                           checkMatch(authorText, authorKw, authorMode) && 
-                          checkMatch(contextText, extractedValue + contextKw, contextMode);
+                          checkMatch(contextText, contextKw, contextMode);
         item.style.display = isVisible ? "" : "none";
       });
     }
 
-    let isUpdating = false;
-    document.getElementById("pf-close").onclick = () => container.style.display = "none";
-    document.getElementById("pf-apply").onclick = applyFilter;
-    document.getElementById("pf-reset").onclick = () => {
+    function applyReset() {
       const extractCheckbox = document.getElementById("pf-extract-participation");
+
       if (extractCheckbox) extractCheckbox.checked = false;
 
       document.getElementById("pf-park-kw").value = "";
@@ -146,8 +136,15 @@ javascript:(async function(){
       document.querySelector('input[name="pf-author-mode"][value="off"]').checked = true;
       document.getElementById("pf-context-kw").value = "";
       document.querySelector('input[name="pf-context-mode"][value="off"]').checked = true;
+
       applyFilter();
-    };
+    }
+
+    let isUpdating = false;
+
+    document.getElementById("pf-close").onclick = () => container.style.display = "none";
+    document.getElementById("pf-apply").onclick = applyFilter;
+    document.getElementById("pf-reset").onclick = applyReset;
 
     new MutationObserver(() => {
       if (!isUpdating) {
