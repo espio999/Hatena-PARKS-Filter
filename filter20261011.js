@@ -82,7 +82,7 @@ javascript:(async function(){
       if (section) {
         const textElements = section.querySelectorAll('span[class*="_text_"]');
         const texts = Array.from(textElements).map(el => el.textContent.trim());
-        return texts.join(',');
+        return texts.join(',') + ',';
       }
       return '';
     }
@@ -90,6 +90,10 @@ javascript:(async function(){
     function applyFilter() {
       // 2. チェックボックスがtrueの時、参加抽出の値を付与する処理
       const extractCheckbox = document.getElementById("pf-extract-participation");
+
+      const extractedValue = (extractCheckbox && extractCheckbox.checked) ? getExtractedParticipationText() : "";
+
+      /*
       if (extractCheckbox && extractCheckbox.checked) {
         const extractedValue = getExtractedParticipationText();
         if (extractedValue) {
@@ -97,6 +101,10 @@ javascript:(async function(){
           document.getElementById("pf-context-kw").value = extractedValue;
         }
       }
+      else {
+        extractedValue = "";
+      }
+      */
 
       const parkKw = document.getElementById("pf-park-kw").value;
       const parkMode = document.querySelector('input[name="pf-park-mode"]:checked').value;
@@ -118,9 +126,9 @@ javascript:(async function(){
         const authorText = authorEl ? authorEl.textContent.trim().toLowerCase() : "";
         const contextText = contextEl ? contextEl.textContent.trim().toLowerCase() : "";
 
-        const isVisible = checkMatch(parkText, parkKw, parkMode) && 
+        const isVisible = checkMatch(parkText, extractedValue + parkKw, parkMode) && 
                           checkMatch(authorText, authorKw, authorMode) && 
-                          checkMatch(contextText, contextKw, contextMode);
+                          checkMatch(contextText, extractedValue + contextKw, contextMode);
         item.style.display = isVisible ? "" : "none";
       });
     }
