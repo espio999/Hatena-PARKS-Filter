@@ -5,7 +5,7 @@ javascript:(async function(){
   const jsDelivrURL = `https://cdn.jsdelivr.net/gh/espio999/Hatena-PARKS-Filter@main/`;
 
   const panelCSS = `panel.css`;
-  const panelHTML = `panel.html`;
+  const panelHTML = `panel20261011.html`;
   const panelScript = `panel.js`;
 
   const HTML_URL = `${GitHubURL}${panelHTML}${cacheBuster}`;
@@ -23,7 +23,7 @@ javascript:(async function(){
   const script = document.createElement("script");
   script.src = `${jsDelivrURL}${panelScript}${cacheBuster}`;
   */
- 
+
   const panel = document.getElementById("parks-filter-panel");
   if (panel) {
     panel.style.display = panel.style.display === "none" ? "block" : "none";
