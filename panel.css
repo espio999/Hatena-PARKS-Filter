@@ -99,3 +99,57 @@
 #parks-filter-panel #pf-reset {
   background: #888;
 }
+
+/* ===== details 全体のデザイン ===== */
+#parks-filter-panel details {
+  background: #fcfdfc;
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  padding: 4px 8px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 開いているときの details のスタイル */
+#parks-filter-panel details[open] {
+  border-color: #4C9D33;
+  box-shadow: 0 2px 6px rgba(76, 157, 51, 0.08);
+}
+
+/* ===== summary（見出し）のデザイン ===== */
+#parks-filter-panel summary {
+  font-weight: bold;
+  color: #333;
+  padding: 6px 4px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 4px;
+  outline: none;
+  transition: background-color 0.2s ease;
+}
+
+#parks-filter-panel summary:hover {
+  background-color: #f0f7ed;
+  color: #4C9D33;
+}
+
+/* 矢印のデザイン調整（ブラウザ標準を活かす、またはカスタム） */
+#parks-filter-panel summary::-webkit-details-marker {
+  color: #4C9D33;
+}
+
+/* ===== 開いた中身の領域をわかりやすくする ===== */
+#parks-filter-panel details[open] summary {
+  border-bottom: 1px dashed #e0e4df;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+}
+
+/* 中身のコンテナに少しインデントや左アクセントをつける場合 */
+#parks-filter-panel details .pf-group {
+  padding-left: 4px;
+  margin-bottom: 12px;
+}
