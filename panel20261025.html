@@ -1,0 +1,78 @@
+<div class="pf-header">
+  <span class="pf-title">Hatena PARKS filter</span>
+  <button id="pf-close" class="pf-close">✕</button>
+</div>
+
+<details open><summary>🪄フィルタ</summary>
+<div class="pf-group">
+  <label class="pf-label">パーク (_parkName)</label>
+  <input type="text" id="pf-park-kw" placeholder="キーワード">
+  <div class="pf-modes">
+    <label><input type="radio" name="pf-park-mode" value="off" checked> OFF</label>
+    <label><input type="radio" name="pf-park-mode" value="include"> 絞り込み</label>
+    <label><input type="radio" name="pf-park-mode" value="exclude"> 除外</label>
+  </div>
+</div>
+<div class="pf-group">
+  <label class="pf-label">投稿者 (_authorName)</label>
+  <input type="text" id="pf-author-kw" placeholder="キーワード">
+  <div class="pf-modes">
+    <label><input type="radio" name="pf-author-mode" value="off" checked> OFF</label>
+    <label><input type="radio" name="pf-author-mode" value="include"> 絞り込み</label>
+    <label><input type="radio" name="pf-author-mode" value="exclude"> 除外</label>
+  </div>
+</div>
+<div class="pf-group">
+  <label class="pf-label">コンテキスト (_postContext)</label>
+  <input type="text" id="pf-context-kw" placeholder="キーワード">
+  <div class="pf-modes">
+    <label><input type="radio" name="pf-context-mode" value="off" checked> OFF</label>
+    <label><input type="radio" name="pf-context-mode" value="include"> 絞り込み</label>
+    <label><input type="radio" name="pf-context-mode" value="exclude"> 除外</label>
+  </div>
+</div>
+
+<div class="pf-group">
+  <label class="pf-label">参加中のパーク</label>
+  <input type="text" id="pf-participation-kw" placeholder="キーワード" readonly>
+  <div class="pf-modes">
+    <label class="pf-checkbox-label">
+      <input type="checkbox" id="pf-extract-participation"> 参加中のパークをフィルタ適用
+    </label>
+  </div>
+</div>
+</details>
+
+<details open><summary>🤖 AI (Gemini Nano)</summary>
+<div class="pf-group">
+  <label class="pf-label">現在の表示を要約</label>
+  <button type="button" id="pf-ai-summarize" class="pf-btn pf-ai-btn">タイムラインを要約する</button>
+  <div id="pf-ai-summarize-result" class="pf-ai-result"></div>
+</div>
+<div class="pf-group">
+  <label class="pf-label">検索候補の提案</label>
+  <button type="button" id="pf-ai-search" class="pf-btn pf-ai-btn">参加中のパークから連想</button>
+  <div id="pf-ai-search-result" class="pf-ai-result"></div>
+</div>
+</details>
+
+<details open><summary>🔍フォント・サイズ</summary>
+<div class="pf-group">
+  <label class="pf-label">フォントサイズ調整</label>
+  <div class="pf-font-control">
+    <button type="button" id="pf-font-shrink" class="pf-btn pf-font-btn">縮小 (-10%)</button>
+    <span id="pf-font-size-display" class="pf-font-display">100%</span>
+    <button type="button" id="pf-font-enlarge" class="pf-btn pf-font-btn">拡大 (+10%)</button>
+  </div>
+</div>
+</details>
+
+<div class="pf-actions">
+  <button id="pf-apply" class="pf-btn">適用</button>
+  <button id="pf-reset" class="pf-btn">リセット</button>
+</div>
+
+<hr class="pf-divider">
+<div class="pf-version">
+  <span>Ver 20261025</span>
+</div>
