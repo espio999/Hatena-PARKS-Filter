@@ -1,7 +1,8 @@
 (function() {
   const summarizeBtn = document.getElementById("pf-ai-summarize");
   const associationBtn = document.getElementById("pf-ai-search");
-  const resultDiv = document.getElementById("pf-ai-result");
+  //const resultDiv = document.getElementById("pf-ai-result");
+  const resultDiv = document.getElementById("pf-ai-search-result");
 
   const messageTable = new Map();
   messageTable.set("browserNotSupported", 'AI非対応ブラウザ（Chrome専用）');
