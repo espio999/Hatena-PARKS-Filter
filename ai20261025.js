@@ -15,8 +15,8 @@
   messageTable.set("associationBtn", "参加中のパークから連想");
 
   //AIプロンプト
-  messageTable.set("summaryPrompt", `以下のタイムラインの投稿内容を要約し、キーポイントを3つの箇条書きで出力してください。\n\n- ${visibleContexts.join("\n- ")}`);
-  messageTable.set("associationPrompt", `以下のCSVデータから連想される、表面上は結びつかないが本質を突く表現を一つ想像してください。その表現を一つの単語として出力してください。出力は単語だけにしてください。\n\n${csvLine}`);
+  messageTable.set("summaryPrompt", "以下のタイムラインの投稿内容を要約し、キーポイントを3つの箇条書きで出力してください。");
+  messageTable.set("associationPrompt", "以下のCSVデータから連想される、表面上は結びつかないが本質を突く表現を一つ想像してください。その表現を一つの単語として出力してください。出力は単語だけにしてください。");
 
   
   const MODEL_OPTIONS = {
@@ -99,7 +99,7 @@
         return;
       }
 
-      const promptText = messageTable.get("summaryPrompt");      
+      const promptText = `$(messageTable.get("summaryPrompt")}\n\n- ${visibleContexts.join("\n- ")}`;
       resultDiv.textContent = await startAiSession(promptText);
     } catch (err) {
       console.error(err);
@@ -115,7 +115,7 @@
     associationBtn.textContent = messageTable.get("summarizing");
 
     const csvLine = document.getElementById("pf-participation-kw")?.value || "";
-    const promptText = messageTable.get("associationPrompt");
+    const promptText = `${messageTable.get("associationPrompt")}\n\n${csvLine}`;
 
     try {
       const searchBox = document.querySelector('[class*="_searchInput_"]');
