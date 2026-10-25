@@ -5,7 +5,7 @@
 
   const messageTable = new Map();
   messageTable.set("browserNotSupported", 'AI非対応ブラウザ（Chrome専用）');
-  messageTable.set("downloading", `ダウンロード進捗: ${e.loaded} / ${e.total}`);
+  messageTable.set("downloading", "ダウンロード進捗:");
   messageTable.set("summarizing", "要約中...");
   messageTable.set("generating", "Gemini Nanoで要約を生成しています...");
   messageTable.set("noPost", "要約対象となる投稿が画面に見当たりません。");
@@ -48,7 +48,7 @@
       monitor(m) {
         m.addEventListener('downloadprogress', (e) => {
           //console.log(`ダウンロード進捗: ${e.loaded} / ${e.total}`);
-          console.log(messageTable.get("downloading"));
+          console.log(`${messageTable.get("downloading")} ${e.loaded} / ${e.total}`);
         });
       }
     });
